@@ -13,10 +13,14 @@ EOF
 fi
 
 wget -q -O - http://ipinfo.io/ip > currentip
-git add currentip
-git commit -m "$(date)"
-repo=$(git remote -v | grep -oP "(?<=https:\/\/)[\S]*(?= \(push\))")
 
-source config.sh
+if ! git diff-index --quiet HEAD --; then
+  git add currentip
+  git commit -m "$(date)"
+  repo=$(git remote -v | grep -oP "(?<=https:\/\/)[\S]*(?= \(push\))")
 
-git push https://$username:$password@$repo
+  source config.sh
+
+  git push https://$username:$password@$repo
+fi
+
