@@ -12,9 +12,12 @@ password="$password"
 EOF
 fi
 
-wget -q -O - http://ipinfo.io/ip > currentip
+curip=$(wget -q -O - http://ipinfo.io/ip)
+previp=$(head -n 1 currentip)
 
-if ! git diff-index --quiet HEAD --; then
+if [ "$curip" != "$previp" ]; then
+  echo "updating IP to $curip"
+  echo $curip > currentip
   git add currentip
   git commit -m "$(date)"
   repo=$(git remote -v | grep -oP "(?<=https:\/\/)[\S]*(?= \(push\))")
