@@ -1,4 +1,5 @@
 #!/bin/bash
+cd $(dirname $(realpath $0))
 if [ ! -f config.sh ]; then
   echo "config file not found, will create one"
   echo "please, enter the username:"
